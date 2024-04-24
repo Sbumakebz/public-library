@@ -19,6 +19,7 @@ import com.public_library.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,9 +32,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping(path = "api/v1/auth", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AuthorisationController {
   @Autowired
   AuthenticationManager authenticationManager;
@@ -86,9 +86,10 @@ public class AuthorisationController {
     }
 
     // Create new user's account
-    User user = new User(signUpRequest.getUsername(),
-            signUpRequest.getEmail(),
-            encoder.encode(signUpRequest.getPassword()));
+    User user = new User();
+    user.setUsername(signUpRequest.getUsername());
+    user.setEmail(signUpRequest.getEmail());
+    user.setPassword(encoder.encode(signUpRequest.getPassword()));
 
     Set<String> strRoles = signUpRequest.getRole();
     Set<Role> roles = new HashSet<>();

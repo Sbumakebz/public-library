@@ -4,16 +4,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "users", 
     uniqueConstraints = { 
@@ -35,7 +35,7 @@ public class User {
   private String email;
 
   @NotBlank
-  @Size(max = 120)
+  @Size(max = 10000)
   private String password;
 
   @ManyToMany(fetch = FetchType.LAZY)
@@ -44,6 +44,4 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
-  public User(String username, String email, String encode) {
-  }
 }

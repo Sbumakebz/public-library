@@ -8,6 +8,6 @@ ARG JAR_FILE=target/*.jar
 WORKDIR /opt/public-library
 
 # cp target/spring-boot-web.jar /opt/public-library/public-library.jar
-COPY ${JAR_FILE} app.jar
+COPY ${JAR_FILE} public-library.jar
 
 ENTRYPOINT ["java","-jar","public-library.jar"]

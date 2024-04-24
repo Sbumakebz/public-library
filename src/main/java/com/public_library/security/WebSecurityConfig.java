@@ -50,6 +50,7 @@ public class WebSecurityConfig {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
+
   
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,8 +58,8 @@ public class WebSecurityConfig {
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> 
-          auth.requestMatchers("/api/auth/**").permitAll()
-              .requestMatchers("/api/test/**").permitAll()
+          auth.requestMatchers("/api/v1/auth/**").permitAll()
+              .requestMatchers("/api/v1/book/**").permitAll()
               .anyRequest().authenticated()
         );
     

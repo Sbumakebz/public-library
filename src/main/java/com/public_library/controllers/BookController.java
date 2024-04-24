@@ -32,7 +32,6 @@ public class BookController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
 
-    @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
@@ -90,12 +89,11 @@ public class BookController {
     @Operation(summary = "Delete Book", description = "Delete a book based on the provided ID")
     @ApiResponse(responseCode = "200", description = "Successfully deleted a book", content = @Content())
     @ApiResponse(responseCode = "400", description = "Bad request: unsuccessful ", content = @Content())
-    @DeleteMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<HttpStatus> deleteBook(@PathVariable String title) {
         LOGGER.info("deleteBook Invoked : Name = {}", title);
         bookService.deleteBook(title);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }
