@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/book", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Tag(name = "Book Controller", description = "Create, Update, Delete, Retrieve Book data")
-//@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 public class BookController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
@@ -66,6 +66,7 @@ public class BookController {
     @ApiResponse(responseCode = "201", description = "Successfully created of a book", content = @Content(schema = @Schema(implementation = Book.class)))
     @ApiResponse(responseCode = "400", description = "Bad request: unsuccessful submission", content = @Content())
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<BookDTO> createBook(@Valid @RequestBody BookDTO book, BindingResult result) {
         LOGGER.info("createBook Invoked");
 
@@ -78,6 +79,7 @@ public class BookController {
     @ApiResponse(responseCode = "200", description = "Successful update of a book", content = @Content(schema = @Schema(implementation = Book.class)))
     @ApiResponse(responseCode = "400", description = "Bad request: unsuccessful submission", content = @Content())
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<BookDTO> updateBook(@Valid @RequestBody BookDTO book, BindingResult result) {
         LOGGER.info("updateBook Invoked : book name = {0} , book author = {1}", book.title(), book.author());
 
@@ -89,6 +91,7 @@ public class BookController {
     @ApiResponse(responseCode = "200", description = "Successfully deleted a book", content = @Content())
     @ApiResponse(responseCode = "400", description = "Bad request: unsuccessful ", content = @Content())
     @DeleteMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<HttpStatus> deleteBook(@PathVariable String title) {
         LOGGER.info("deleteBook Invoked : Name = {}", title);
         bookService.deleteBook(title);
