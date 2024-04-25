@@ -39,9 +39,10 @@ public class BookServiceImplementation implements BookService {
 
     @Override
     public BookDTO updateBook(BookDTO book) {
-        Book bookToSave = convertToEntity(book);
-        bookRepository.findById(bookToSave.getId()).orElseThrow(() -> new BadRequestException("A book with the specified title does not exist | title = " + bookToSave.getTitle()));
-        return convertToDTO(bookRepository.save(bookToSave));
+        Book bookToUpdate = bookRepository.findByTitle(book.title()).orElseThrow(() -> new BadRequestException("A book with the specified title does not exist | title = " + book.title()));
+        bookToUpdate.setAuthor(book.author());
+        bookToUpdate.setGenre(book.genre());
+        return convertToDTO(bookRepository.save(bookToUpdate));
     }
 
     @Override
@@ -77,6 +78,7 @@ public class BookServiceImplementation implements BookService {
 
     public BookDTO convertToDTO(Book book) {
         return new BookDTO (
+                book.getId(),
                 book.getTitle(),
                 book.getAuthor(),
                 book.getGenre());
